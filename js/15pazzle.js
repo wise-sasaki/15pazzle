@@ -1,35 +1,55 @@
 onload = function () {
+    /** 正しいパネルの順番 */
     const defaultPanels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "　"];
+    /** 操作するパネル */
     let panels;
+    /** 操作中フラグ */
     let inplay = false;
+    /**
+     * パズルの初期化を行う。
+     */
     function initialize() {
         panels = Array.from(defaultPanels);
-        createPazzleElement();
-        addStartButton();
-        drawPanel();
-    }
-    function createPazzleElement() {
-        const elemet = document.getElementById('pazzle-wrap');
-        if (!elemet) {
-            const body = document.body;
-            const wrap = document.createElement('div');
-            wrap.id = 'pazzle-wrap';
-            const title = document.createElement('div');
-            title.id = 'pazzle-title';
-            title.innerText = '15パズル';
-            wrap.appendChild(title);
-            const frame = document.createElement('div');
-            frame.id = 'pazzle-frame';
-            for (let i = 0; i < 16; i++) {
-                const panel = document.createElement('div');
-                panel.id = `panel-${i}`;
-                panel.className = 'pazzle-panel';
-                frame.appendChild(panel);
-            }
-            wrap.appendChild(frame);
-            body.appendChild(wrap);
+        if(createPazzleElement()){
+            addStartButton();
+            drawPanel();
         }
     }
+    /**
+     * div#pazzle-wrapのElemetが取得できる場合にパズルのDOM構造を作成する。
+     * @returns パズルDOM
+     */
+    function createPazzleElement() {
+        const wrap = document.getElementById('pazzle-wrap');        
+        if (wrap && wrap.tagName === 'DIV') {
+            const body = document.body;
+            let title = document.getElementById('pazzle-title');
+            if(!title){
+                title = document.createElement('div');
+                title.id = 'pazzle-title';
+                title.innerText = '15パズル';
+                wrap.appendChild(title);
+            }
+            let frame = document.getElementById('pazzle-frame');
+            if(!frame){
+                frame = document.createElement('div');
+                frame.id = 'pazzle-frame';
+                for (let i = 0; i < 16; i++) {
+                    const panel = document.createElement('div');
+                    panel.id = `panel-${i}`;
+                    panel.className = 'pazzle-panel';
+                    frame.appendChild(panel);
+                }
+                wrap.appendChild(frame);
+            }
+            body.appendChild(wrap);
+            return wrap;
+        }
+        return null;
+    }
+    /**
+     * パズルを開始するボタンを作成する。
+     */
     function addStartButton() {
         const wrap = document.getElementById('pazzle-wrap');
         const buttonWrap = document.createElement('div');
@@ -43,10 +63,17 @@ onload = function () {
         buttonWrap.appendChild(startButton);
         wrap.appendChild(buttonWrap);
     }
+    /**
+     * パズルが開始された後にボタンを削除する。
+     */
     function removeStartButton() {
         let startButton = document.getElementById('start-button');
         startButton.remove();
     }
+    /**
+     * パズルを開始する。
+     * @returns 同期処理
+     */
     function gameStart() {
         return new Promise(() => {
             addPopUpText('GAME START!');
@@ -56,6 +83,9 @@ onload = function () {
             inplay = true;
         });
     }
+    /**
+     * パズルの終了を判定する。
+     */
     function gameResult() {
         if (!inplay) {
             return;
@@ -71,11 +101,15 @@ onload = function () {
             }
         }
         if (result) {
-            addPopUpText('GAME OVER!');
+            addPopUpText('GAME OVER !');
             initialize();
             removePanelHandler();
         }
     }
+    /**
+     * パズル開始・終了時に表示されるポップアップテキストの表示・削除を行う。
+     * @param text 表示するテキスト
+     */
     function addPopUpText(text) {
         const frame = document.getElementById('pazzle-frame');
         const popText = document.createElement('div');
@@ -86,6 +120,9 @@ onload = function () {
             popText.remove();
         }, 5000);
     }
+    /**
+     * パネル操作のイベントハンドラー
+     */
     const panelHandler = (event) => {
         const select = parseInt(event.target.id.replace('panel-', ''), 10);
         changePanel(select);
@@ -93,18 +130,28 @@ onload = function () {
             gameResult();
         });
     };
+    /**
+     * パネル操作のイベントハンドラーを設定する。
+     */
     function addPanelHandler() {
         let elements = document.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
             elements[i].addEventListener('click', panelHandler);
         }
     }
+    /**
+     * パネル操作のイベントハンドラーを削除する。
+     */
     function removePanelHandler() {
         let elements = document.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
             elements[i].removeEventListener('click', panelHandler);
         }
     }
+    /**
+     * パネルの入れ替え判定を行う。
+     * @param select 選択したパネルの番号
+     */
     function changePanel(select) {
         const panel = document.getElementsByClassName('blank-panel')[0];
         if (panel) {
@@ -169,7 +216,6 @@ onload = function () {
                 } else if (select + 1 === blank) {
                     exchange(select, blank);
                 }
-
             } else if (select === 15) {
                 if (14 === blank) {
                     exchange(select, blank);
@@ -180,11 +226,19 @@ onload = function () {
         }
         drawPanel();
     }
+    /**
+     * パネルの入れ替え処理を行う。
+     * @param select 選択したパネルの番号
+     * @param blank 空欄のパネルの番号
+     */
     function exchange(select, blank) {
         const tmp = panels[select];
         panels[select] = "　";
         panels[blank] = tmp;
     }
+    /**
+     * パネルの描画を行う。
+     */
     function drawPanel() {
         let elements = document.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
@@ -196,6 +250,9 @@ onload = function () {
             }
         }
     }
+    /**
+     * パネルの順番をシャッフルする。
+     */
     function shufflePanel() {
         const difficulty = 1000;
         for (let i = 0; i < difficulty; i++) {
