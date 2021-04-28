@@ -1,16 +1,21 @@
 #pazzle-wrap {
     width: 230px;
     margin: 0 auto;
+    font-size: 62.5%;
+    font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 #pazzle-wrap div {
     box-sizing: border-box;
+    font-size: 1.2rem;
 }
-#pazzle-title {
-    margin-bottom: 20px;
+#pazzle-wrap #pazzle-title {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
     text-align: center;
     font-weight: bold;
+    color: gray;
 }
-#pazzle-frame {
+#pazzle-wrap #pazzle-frame {
     display: grid;
     border: solid 1px gray;
     grid-template-columns: repeat(16, 1fr);
@@ -19,7 +24,7 @@
     background-color: lightgray;
     color: black;
 }
-#pazzle-frame .pazzle-panel {
+#pazzle-wrap #pazzle-frame .pazzle-panel {
     cursor: pointer;
     user-select: none;
     grid-column: 4 span;
@@ -30,33 +35,39 @@
     border-radius: 5px;
     text-align: center;
     margin-bottom: 5px;
-    background-color: white;
+    background-color: #fff;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
-#pazzle-frame .pazzle-panel:hover {
+#pazzle-wrap #pazzle-frame .pazzle-panel:hover {
     background-color: gray;
-    color: white;
+    color: #fff;
     font-weight: bold;
 }
-#pazzle-frame .blank-panel {
+#pazzle-wrap #pazzle-frame .blank-panel {
     border: 0px;
     background-color: transparent;
 }
-#pazzle-frame .blank-panel:hover {
+#pazzle-wrap #pazzle-frame .blank-panel:hover {
     background-color: transparent;
 }
-.start-button {
+#pazzle-wrap .start-button {
     width: 230px;
-    margin: 20px 0px;
+    margin: 15px 0px;
     text-align: center;
 }
-.start-button button{
-    padding: 10px 20px;
+#pazzle-wrap .start-button button{
+    padding: 3px 10px;
+    font-size: 1.4rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
-.poptext {
+#pazzle-wrap .poptext {
     position: absolute;
     top: 140px;
-    font-size: 2em;
+    width: 220px;
     text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     animation-name: fade-in;
     animation-duration: 5s;
 }
@@ -70,4 +81,84 @@
     100%{
         opacity: 0;
     }
+}
+
+/* Color variations */
+/* pazzle-red */
+#pazzle-wrap.pazzle-red #pazzle-title {
+    color: #f12711;
+}
+#pazzle-wrap.pazzle-red #pazzle-frame {
+    border-color: #f5af19;
+    background: #f12711;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */        
+    color: #fff;
+}
+#pazzle-wrap.pazzle-red #pazzle-frame .pazzle-panel {
+    border-color: #fff;
+    background: #f58319;
+    color: #fff;
+    font-size: 2rem;
+}
+#pazzle-wrap.pazzle-red #pazzle-frame .blank-panel {
+    border: 0px;
+    background: transparent;
+}
+#pazzle-wrap.pazzle-red button#start-button {
+    padding: 10px 25px;
+    border-radius: 100vh;
+    border-color: #fff;
+    background: #f12711;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+    color: #fff;
+}
+#pazzle-wrap.pazzle-red button#start-button:active {
+    border-color: #fff;
+}
+#pazzle-wrap.pazzle-red .poptext {
+    color: #f12711;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #fff;
+}
+/* pazzle-blue */
+#pazzle-wrap.pazzle-blue #pazzle-title {
+    color: #1CB5E0;
+}
+#pazzle-wrap.pazzle-blue #pazzle-frame {
+    border-color: #1CB5E0;
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-radial-gradient(#000046, #1CB5E0);  /* Chrome 10-25, Safari 5.1-6 */
+    background: radial-gradient(#000046, #1CB5E0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                
+    color: #fff;
+}
+#pazzle-wrap.pazzle-blue #pazzle-frame .pazzle-panel {
+    border-color: #fff;
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-radial-gradient(#1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+    background: radial-gradient(#1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */       
+    color: #fff;
+    font-size: 2rem;
+}
+#pazzle-wrap.pazzle-blue #pazzle-frame .blank-panel {
+    border: 0px;
+    background: transparent;
+}
+#pazzle-wrap.pazzle-blue button#start-button {
+    padding: 10px 25px;
+    border-radius: 10px;
+    border-color: #fff;
+    background: #000046;  /* fallback for old browsers */
+    background: -webkit-radial-gradient(#1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+    background: radial-gradient(#1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */       
+    color: #fff;
+}
+#pazzle-wrap.pazzle-blue button#start-button:active {
+    border-color: #fff;
+}
+#pazzle-wrap.pazzle-blue .poptext {
+    color: #1CB5E0;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #fff;
 }
