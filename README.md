@@ -5,7 +5,7 @@ pure javascriptでどれぐらい書けるのか？というテーマで作成�
 * 左上から１～１５の順番に並べ替えるとゲームクリアです。
 
 # DEMO
-
+https://master.dc2vsl1ityb0h.amplifyapp.com/html/index.html
 
 # Features
 * id属性に「pazzle-wrap」をつけたdiv要素置いておくだけで、画面表示時にパズルが呼び出されます。
