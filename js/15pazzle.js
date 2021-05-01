@@ -1,99 +1,111 @@
 onload = function () {
-    /** 正しいパネルの順番 */
-    const defaultPanels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "　"];
-    /** 操作するパネル */
-    let panels;
-    /** 操作中フラグ */
-    let inplay = false;
+    const elements = document.getElementsByClassName('pazzle-wrap');
+    for (element of elements) {
+        new Pazzle(element);
+    }
+}
+class Pazzle {
+    constructor(element) {
+        // 正しいパネルの順番
+        this.defaultPanels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "　"];
+        // 操作するパネル
+        this.panels;
+        // 操作中フラグ
+        this.inplay = false;
+        // pazzle-wrap要素
+        this.wrap = element;
+        this.initialize();
+    }
     /**
      * パズルの初期化を行う。
      */
-    function initialize() {
-        panels = Array.from(defaultPanels);
-        if(createPazzleElement()){
-            addStartButton();
-            drawPanel();
+    initialize() {
+        this.panels = Array.from(this.defaultPanels);
+        if (this.createPazzleElement()) {
+            this.addStartButton();
+            this.drawPanel();
         }
     }
     /**
      * div#pazzle-wrapのElemetが取得できる場合にパズルのDOM構造を作成する。
      * @returns パズルDOM
      */
-    function createPazzleElement() {
-        const wrap = document.getElementById('pazzle-wrap');        
-        if (wrap && wrap.tagName === 'DIV') {
+    createPazzleElement() {
+        if (this.wrap && this.wrap.tagName === 'DIV') {
             const body = document.body;
-            let title = document.getElementById('pazzle-title');
-            if(!title){
+            let title = this.wrap.getElementsByClassName('pazzle-title')[0];
+            if (!title) {
                 title = document.createElement('div');
-                title.id = 'pazzle-title';
+                title.className = 'pazzle-title';
                 title.innerText = '15パズル';
-                wrap.appendChild(title);
+                this.wrap.appendChild(title);
             }
-            let frame = document.getElementById('pazzle-frame');
-            if(!frame){
+            let frame = this.wrap.getElementsByClassName('pazzle-frame')[0];
+            if (!frame) {
                 frame = document.createElement('div');
-                frame.id = 'pazzle-frame';
+                frame.className = 'pazzle-frame';
                 for (let i = 0; i < 16; i++) {
                     const panel = document.createElement('div');
-                    panel.id = `panel-${i}`;
-                    panel.className = 'pazzle-panel';
+                    panel.classList.add(`panel-${i}`);
+                    panel.classList.add('pazzle-panel');
                     frame.appendChild(panel);
                 }
-                wrap.appendChild(frame);
+                this.wrap.appendChild(frame);
             }
-            body.appendChild(wrap);
-            return wrap;
+            return this.wrap;
         }
         return null;
     }
     /**
      * パズルを開始するボタンを作成する。
      */
-    function addStartButton() {
-        const wrap = document.getElementById('pazzle-wrap');
-        const buttonWrap = document.createElement('div');
-        buttonWrap.className = 'start-button';
+    addStartButton() {
+        let buttonWrap = this.wrap.getElementsByClassName('start-button-wrap')[0];
+        if(!buttonWrap) {
+            buttonWrap = document.createElement('div');
+            buttonWrap.className = 'start-button-wrap';
+            this.wrap.appendChild(buttonWrap);
+        }
         const startButton = document.createElement('button');
-        startButton.id = 'start-button';
+        startButton.className = 'start-button';
         startButton.innerText = 'Start!';
         startButton.addEventListener('click', async () => {
-            await gameStart();
+            await this.gameStart();
         });
         buttonWrap.appendChild(startButton);
-        wrap.appendChild(buttonWrap);
+        
     }
     /**
      * パズルが開始された後にボタンを削除する。
      */
-    function removeStartButton() {
-        let startButton = document.getElementById('start-button');
+    removeStartButton() {
+        let startButton = this.wrap.getElementsByClassName('start-button')[0];
         startButton.remove();
     }
     /**
      * パズルを開始する。
      * @returns 同期処理
      */
-    function gameStart() {
+    gameStart() {
         return new Promise(() => {
-            addPopUpText('GAME START!');
-            addPanelHandler();
-            shufflePanel();
-            removeStartButton();
-            inplay = true;
+            this.addPopUpText('GAME START!');
+            this.addPanelHandler();
+            this.shufflePanel();
+            this.removeStartButton();
+            this.inplay = true;
         });
     }
     /**
      * パズルの終了を判定する。
      */
-    function gameResult() {
-        if (!inplay) {
+    gameResult() {
+        if (!this.inplay) {
             return;
         }
         let result = false;
         let count = 0;
         for (let i = 0; i < 16; i++) {
-            if (panels[i] === defaultPanels[i]) {
+            if (this.panels[i] === this.defaultPanels[i]) {
                 count++;
             }
             if (count === 15) {
@@ -101,17 +113,17 @@ onload = function () {
             }
         }
         if (result) {
-            addPopUpText('GAME OVER !');
-            initialize();
-            removePanelHandler();
+            this.addPopUpText('GAME OVER !');
+            this.initialize();
+            this.removePanelHandler();
         }
     }
     /**
      * パズル開始・終了時に表示されるポップアップテキストの表示・削除を行う。
      * @param text 表示するテキスト
      */
-    function addPopUpText(text) {
-        const frame = document.getElementById('pazzle-frame');
+    addPopUpText(text) {
+        const frame = this.wrap.getElementsByClassName('pazzle-frame')[0];
         const popText = document.createElement('div');
         popText.innerText = text;
         popText.className = 'poptext';
@@ -123,126 +135,126 @@ onload = function () {
     /**
      * パネル操作のイベントハンドラー
      */
-    const panelHandler = (event) => {
-        const select = parseInt(event.target.id.replace('panel-', ''), 10);
-        changePanel(select);
+    panelHandler = (event) => {
+        const select = parseInt(event.target.classList[0].replace('panel-', ''), 10);
+        this.changePanel(select);
         setTimeout(() => {
-            gameResult();
+            this.gameResult();
         });
     };
     /**
      * パネル操作のイベントハンドラーを設定する。
      */
-    function addPanelHandler() {
-        let elements = document.getElementsByClassName('pazzle-panel');
+    addPanelHandler() {
+        let elements = this.wrap.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
-            elements[i].addEventListener('click', panelHandler);
+            elements[i].addEventListener('click', this.panelHandler);
         }
     }
     /**
      * パネル操作のイベントハンドラーを削除する。
      */
-    function removePanelHandler() {
-        let elements = document.getElementsByClassName('pazzle-panel');
+    removePanelHandler() {
+        let elements = this.wrap.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
-            elements[i].removeEventListener('click', panelHandler);
+            elements[i].removeEventListener('click', this.panelHandler);
         }
     }
     /**
      * パネルの入れ替え判定を行う。
      * @param select 選択したパネルの番号
      */
-    function changePanel(select) {
-        const panel = document.getElementsByClassName('blank-panel')[0];
+    changePanel(select) {
+        const panel = this.wrap.getElementsByClassName('blank-panel')[0];
         if (panel) {
-            const blank = parseInt(panel.id.replace('panel-', ''), 10);
+            const blank = parseInt(panel.classList[0].replace('panel-', ''), 10);
             if (select === 0) {
                 if (1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 1 || select === 2) {
                 if (select - 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 3) {
                 if (2 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (7 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 4 || select === 8) {
                 if (select - 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 5 || select === 6 || select === 9 || select === 10) {
                 if (select - 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select - 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 7 || select === 11) {
                 if (select - 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select - 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 12) {
                 if (8 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (13 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 13 || select === 14) {
                 if (select - 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select - 4 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (select + 1 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             } else if (select === 15) {
                 if (14 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 } else if (11 === blank) {
-                    exchange(select, blank);
+                    this.exchange(select, blank);
                 }
             }
         }
-        drawPanel();
+        this.drawPanel();
     }
     /**
      * パネルの入れ替え処理を行う。
      * @param select 選択したパネルの番号
      * @param blank 空欄のパネルの番号
      */
-    function exchange(select, blank) {
-        const tmp = panels[select];
-        panels[select] = "　";
-        panels[blank] = tmp;
+    exchange(select, blank) {
+        const tmp = this.panels[select];
+        this.panels[select] = "　";
+        this.panels[blank] = tmp;
     }
     /**
      * パネルの描画を行う。
      */
-    function drawPanel() {
-        let elements = document.getElementsByClassName('pazzle-panel');
+    drawPanel() {
+        let elements = this.wrap.getElementsByClassName('pazzle-panel');
         for (let i = 0; i < elements.length; i++) {
-            elements[i].innerText = panels[i];
+            elements[i].innerText = this.panels[i];
             if (elements[i].innerText === "　") {
                 elements[i].classList.add('blank-panel');
             } else {
@@ -253,12 +265,11 @@ onload = function () {
     /**
      * パネルの順番をシャッフルする。
      */
-    function shufflePanel() {
+    shufflePanel() {
         const difficulty = 1000;
         for (let i = 0; i < difficulty; i++) {
             const random = Math.floor(Math.random() * 15);
-            changePanel(random);
+            this.changePanel(random);
         }
     }
-    initialize();
 }

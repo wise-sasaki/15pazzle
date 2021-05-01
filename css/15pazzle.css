@@ -1,22 +1,23 @@
 @charset "utf-8";
-#pazzle-wrap {
+.pazzle-wrap {
     width: 230px;
     margin: 0 auto;
     font-size: 62.5%;
     font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
-#pazzle-wrap div {
+.pazzle-wrap div {
     box-sizing: border-box;
     font-size: 1.2rem;
 }
-#pazzle-wrap #pazzle-title {
+.pazzle-wrap .pazzle-title {
     font-size: 1.6rem;
     margin-bottom: 5px;
     text-align: center;
     font-weight: bold;
     color: gray;
 }
-#pazzle-wrap #pazzle-frame {
+.pazzle-wrap .pazzle-frame {
+    position: relative;
     display: grid;
     border: solid 1px gray;
     grid-template-columns: repeat(16, 1fr);
@@ -25,7 +26,7 @@
     background-color: lightgray;
     color: black;
 }
-#pazzle-wrap #pazzle-frame .pazzle-panel {
+.pazzle-wrap .pazzle-frame .pazzle-panel {
     cursor: pointer;
     user-select: none;
     grid-column: 4 span;
@@ -39,31 +40,32 @@
     background-color: #fff;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
-#pazzle-wrap #pazzle-frame .pazzle-panel:hover {
+.pazzle-wrap .pazzle-frame .pazzle-panel:hover {
     background-color: gray;
     color: #fff;
     font-weight: bold;
 }
-#pazzle-wrap #pazzle-frame .blank-panel {
+.pazzle-wrap .pazzle-frame .blank-panel {
     border: 0px;
     background-color: transparent;
 }
-#pazzle-wrap #pazzle-frame .blank-panel:hover {
+.pazzle-wrap .pazzle-frame .blank-panel:hover {
     background-color: transparent;
 }
-#pazzle-wrap .start-button {
+.pazzle-wrap .start-button-wrap {
     width: 230px;
+    height: 52px;
     margin: 15px 0px;
     text-align: center;
 }
-#pazzle-wrap .start-button button{
+.pazzle-wrap .start-button-wrap button{
     padding: 3px 10px;
     font-size: 1.4rem;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
-#pazzle-wrap .poptext {
+.pazzle-wrap .poptext {
     position: absolute;
-    top: 140px;
+    top: 80px;
     width: 220px;
     text-align: center;
     font-size: 2.5rem;
@@ -86,27 +88,27 @@
 
 /* Color variations */
 /* pazzle-red */
-#pazzle-wrap.pazzle-red #pazzle-title {
+.pazzle-wrap.pazzle-red .pazzle-title {
     color: #f12711;
 }
-#pazzle-wrap.pazzle-red #pazzle-frame {
+.pazzle-wrap.pazzle-red .pazzle-frame {
     border-color: #f5af19;
     background: #f12711;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */        
     color: #fff;
 }
-#pazzle-wrap.pazzle-red #pazzle-frame .pazzle-panel {
+.pazzle-wrap.pazzle-red .pazzle-frame .pazzle-panel {
     border-color: #fff;
     background: #f58319;
     color: #fff;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-red #pazzle-frame .blank-panel {
+.pazzle-wrap.pazzle-red .pazzle-frame .blank-panel {
     border: 0px;
     background: transparent;
 }
-#pazzle-wrap.pazzle-red button#start-button {
+.pazzle-wrap.pazzle-red button.start-button {
     padding: 10px 25px;
     border-radius: 100vh;
     border-color: #fff;
@@ -115,40 +117,40 @@
     background: linear-gradient(to bottom, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
     color: #fff;
 }
-#pazzle-wrap.pazzle-red button#start-button:hover {
+.pazzle-wrap.pazzle-red button.start-button:hover {
     padding: 5px 15px;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-red .poptext {
+.pazzle-wrap.pazzle-red .poptext {
     color: #f12711;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #fff;
 }
 /* pazzle-green */
-#pazzle-wrap.pazzle-green #pazzle-title {
+.pazzle-wrap.pazzle-green .pazzle-title {
     color: #11998e;
 }
-#pazzle-wrap.pazzle-green #pazzle-frame {
+.pazzle-wrap.pazzle-green .pazzle-frame {
     border-color: #38ef7d;
     background: #11998e;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #38ef7d, #11998e);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */            
     color: #fff;
 }
-#pazzle-wrap.pazzle-green #pazzle-frame .pazzle-panel {
+.pazzle-wrap.pazzle-green .pazzle-frame .pazzle-panel {
     border-color: #fff;
     background: #11998e;
     color: #38ef7d;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-green #pazzle-frame .pazzle-panel:hover {
+.pazzle-wrap.pazzle-green .pazzle-frame .pazzle-panel:hover {
     font-size: 3rem;
 }
-#pazzle-wrap.pazzle-green #pazzle-frame .blank-panel {
+.pazzle-wrap.pazzle-green .pazzle-frame .blank-panel {
     border: 0px;
     background: transparent;
 }
-#pazzle-wrap.pazzle-green button#start-button {
+.pazzle-wrap.pazzle-green button.start-button {
     padding: 5px 20px;
     border-radius: 10px;
     border-color: #fff;
@@ -157,27 +159,27 @@
     background: linear-gradient(to bottom, #38ef7d, #11998e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */           
     color: #fff;
 }
-#pazzle-wrap.pazzle-green button#start-button:hover {
+.pazzle-wrap.pazzle-green button.start-button:hover {
     padding: 0px 10px;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-green .poptext {
+.pazzle-wrap.pazzle-green .poptext {
     color: #38ef7d;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #fff;
 }
 /* pazzle-blue */
-#pazzle-wrap.pazzle-blue #pazzle-title {
+.pazzle-wrap.pazzle-blue .pazzle-title {
     color: #1CB5E0;
 }
-#pazzle-wrap.pazzle-blue #pazzle-frame {
+.pazzle-wrap.pazzle-blue .pazzle-frame {
     border-color: #1CB5E0;
     background: #000046;  /* fallback for old browsers */
     background: -webkit-radial-gradient(#000046, #1CB5E0);  /* Chrome 10-25, Safari 5.1-6 */
     background: radial-gradient(#000046, #1CB5E0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */                
     color: #fff;
 }
-#pazzle-wrap.pazzle-blue #pazzle-frame .pazzle-panel {
+.pazzle-wrap.pazzle-blue .pazzle-frame .pazzle-panel {
     border-color: #fff;
     background: #000046;  /* fallback for old browsers */
     background: -webkit-radial-gradient(#1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
@@ -185,11 +187,11 @@
     color: #fff;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-blue #pazzle-frame .blank-panel {
+.pazzle-wrap.pazzle-blue .pazzle-frame .blank-panel {
     border: 0px;
     background: transparent;
 }
-#pazzle-wrap.pazzle-blue button#start-button {
+.pazzle-wrap.pazzle-blue button.start-button {
     padding: 10px 25px;
     border-radius: 10px;
     border-color: #fff;
@@ -198,11 +200,11 @@
     background: radial-gradient(#1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */       
     color: #fff;
 }
-#pazzle-wrap.pazzle-blue button#start-button:hover {
+.pazzle-wrap.pazzle-blue button.start-button:hover {
     padding: 5px 15px;
     font-size: 2rem;
 }
-#pazzle-wrap.pazzle-blue .poptext {
+.pazzle-wrap.pazzle-blue .poptext {
     color: #1CB5E0;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: #fff;
